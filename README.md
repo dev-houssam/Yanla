@@ -2,7 +2,7 @@
 
 **Yanla** est un langage de programmation et un environnement d'exécution dédiés à la construction, la composition et l'exposition de systèmes intelligents.
 
-Petite Disclaimer : Je préfère être clair ! Je travail et je test certaines idées avec l'IA mais je reste maître de mes erreurs et des `mes` avancements. Bonne Lecture !
+Petite Disclaimer : Je préfère être clair ! Je travail et je test certaines idées avec l'IA mais je reste maître de mes erreurs et de `mes` avancements. Bonne Lecture !
 
 Yanla permet de décrire de manière structurée :
 
