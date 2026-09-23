@@ -1,0 +1,88 @@
+/*
+ * Yanla — Exposition du service RAG
+ *
+ * Ce fichier ne définit pas le modèle RAG.
+ * Il définit uniquement les opérations accessibles
+ * depuis l'extérieur du système Yanla.
+ *
+ * L'implémentation des opérations appartient à la task
+ * ou aux composants Yanla correspondants.
+ */
+
+expose RAGService {
+
+    /*
+     * Identité du service.
+     */
+    name "rag";
+
+    version "1.0";
+
+    description "Service de recherche augmentée par génération";
+
+
+    /*
+     * Endpoint principal.
+     *
+     * Reçoit une question et retourne une réponse.
+     */
+    endpoint ask {
+
+        input {
+            query: string;
+        }
+
+        output {
+            answer: string;
+        }
+    };
+
+
+    /*
+     * Endpoint permettant de rechercher dans
+     * la base de connaissances sans générer de réponse.
+     */
+    endpoint search {
+
+        input {
+            query: string;
+        }
+
+        output {
+            context: string;
+        }
+    };
+
+
+    /*
+     * Endpoint permettant d'obtenir une représentation
+     * vectorielle d'un texte.
+     */
+    endpoint embed {
+
+        input {
+            text: string;
+        }
+
+        output {
+            vector: binary;
+        }
+    };
+
+
+    /*
+     * Endpoint de vérification de disponibilité.
+     *
+     * Il est volontairement exposé au niveau du service
+     * et ne dépend pas de la logique du modèle.
+     */
+    endpoint health {
+
+        input {
+        }
+
+        output {
+            status: string;
+        }
+    };
+}
