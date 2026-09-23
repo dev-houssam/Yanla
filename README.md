@@ -14,7 +14,7 @@ Yanla permet de décrire de manière structurée :
 * la gestion de la mémoire et des ressources matérielles ;
 * l'exposition de modèles et de services intelligents.
 
-Yanla est conçu pour compiler vers **C**, afin de pouvoir exploiter largement les bibliothèques et infrastructures existantes pour le calcul CPU, GPU, la mémoire et les systèmes distribués.
+Yanla est conçu pour compiler vers langage **C**, afin de pouvoir exploiter largement les bibliothèques et infrastructures existantes pour le calcul CPU, GPU, la mémoire et les systèmes distribués (trop vague, mais ça s'y rapproche de ce qu'on veut réellement).
 
 ---
 
@@ -538,11 +538,13 @@ L'objectif est de pouvoir distribuer progressivement les Neural, les tâches et 
 
 ---
 
-# Philosophie du projet
+# Un peu ou pas de...Philosophie
 
-Yanla ne cherche pas à remplacer les langages généralistes.
+Yanla ne cherche pas à remplacer les langages généralistes (Phrase type AI Slop....). 
 
 Au contraire, Yanla fournit une couche spécialisée permettant à des applications écrites dans d'autres langages d'utiliser des systèmes intelligents complexes.
+
+Donc oui, les modèles conçu dans d'autres d'outils peuvent etre integré mais uniquement pour completer le moteur de Dispatching... Voilà !
 
 Une application Java pourrait simplement effectuer :
 
@@ -618,6 +620,8 @@ Distribution
    ↓
 Gestion matérielle
 ```
+
+Donc Voilà ! 
 
 ---
 
