@@ -1,0 +1,233 @@
+/*
+ * Yanla — Interface CORBA publique
+ *
+ * Cette interface décrit le contrat entre un client CORBA
+ * et un système exposé par Yanla.
+ *
+ * Elle ne décrit aucun modèle particulier.
+ * Elle décrit uniquement les points d'entrée accessibles
+ * depuis l'extérieur.
+ */
+
+module Yanla {
+
+    /*
+     * Codes d'erreur génériques.
+     */
+    enum ErrorCode {
+        UNKNOWN,
+        INVALID_ARGUMENT,
+        NOT_FOUND,
+        UNAVAILABLE,
+        TIMEOUT,
+        INTERNAL_ERROR,
+        NOT_SUPPORTED,
+        PERMISSION_DENIED
+    };
+
+
+    /*
+     * Exception générale d'exécution.
+     */
+    exception ServiceError {
+
+        ErrorCode code;
+
+        string message;
+
+        string service;
+
+        string operation;
+    };
+
+
+    /*
+     * Une valeur pouvant être transmise à un endpoint.
+     *
+     * Le protocole CORBA transporte ici des données génériques.
+     * La signification réelle est définie par l'endpoint exposé.
+     */
+    union Value switch (short) {
+
+        case 0:
+            string string_value;
+
+        case 1:
+            long long_value;
+
+        case 2:
+            double double_value;
+
+        case 3:
+            boolean boolean_value;
+
+        case 4:
+            sequence<octet> binary_value;
+    };
+
+
+    /*
+     * Paramètre d'appel.
+     */
+    struct Argument {
+
+        string name;
+
+        Value value;
+    };
+
+
+    /*
+     * Liste d'arguments.
+     */
+    typedef sequence<Argument> ArgumentList;
+
+
+    /*
+     * Résultat générique d'une opération.
+     */
+    struct Result {
+
+        boolean success;
+
+        Value value;
+
+        string message;
+    };
+
+
+    /*
+     * Description d'une opération exposée.
+     */
+    struct OperationDescription {
+
+        string name;
+
+        string description;
+
+        string input_type;
+
+        string output_type;
+    };
+
+
+    /*
+     * Liste d'opérations.
+     */
+    typedef sequence<OperationDescription> OperationList;
+
+
+    /*
+     * Informations générales sur un service Yanla.
+     */
+    struct ServiceInfo {
+
+        string name;
+
+        string version;
+
+        string description;
+
+        string implementation;
+
+        string status;
+    };
+
+
+    /*
+     * Interface principale d'un service Yanla.
+     *
+     * Cette interface constitue le point d'entrée CORBA.
+     */
+    interface Service {
+
+        /*
+         * Informations générales sur le service.
+         */
+        ServiceInfo info()
+            raises (ServiceError);
+
+
+        /*
+         * Vérifie que le service est disponible.
+         */
+        boolean ping()
+            raises (ServiceError);
+
+
+        /*
+         * Retourne la liste des opérations exposées.
+         */
+        OperationList operations()
+            raises (ServiceError);
+
+
+        /*
+         * Exécute une opération exposée.
+         *
+         * Exemple :
+         *
+         * invoke(
+         *     "ask",
+         *     {
+         *         {"query", "..."}
+         *     }
+         * )
+         */
+        Result invoke(
+            in string operation,
+            in ArgumentList arguments
+        )
+        raises (ServiceError);
+    };
+
+
+    /*
+     * Service de découverte.
+     *
+     * Il permet à un client de demander à YAINDIS
+     * quels services sont actuellement disponibles.
+     */
+    interface Dispatcher {
+
+        /*
+         * Recherche un service par son nom.
+         */
+        Service resolve(
+            in string service_name
+        )
+        raises (ServiceError);
+
+
+        /*
+         * Vérifie la disponibilité d'un service.
+         */
+        boolean available(
+            in string service_name
+        )
+        raises (ServiceError);
+    };
+
+
+    /*
+     * Point d'entrée racine de l'écosystème Yanla.
+     *
+     * Le client CORBA peut obtenir un Dispatcher
+     * puis résoudre le service dont il a besoin.
+     */
+    interface Yanla {
+
+        /*
+         * Informations sur l'instance Yanla.
+         */
+        string version()
+            raises (ServiceError);
+
+
+        /*
+         * Accès au dispatcher.
+         */
+        Dispatcher dispatcher()
+            raises (ServiceError);
+    };
+};
